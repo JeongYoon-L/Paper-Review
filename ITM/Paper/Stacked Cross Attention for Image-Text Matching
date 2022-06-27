@@ -127,5 +127,5 @@ Improves image retrieval by 16.6% relatively
 4. Temperature parameter : https://velog.io/@jkl133/temperature-parameter-in-learner-fastai
 5. cross entropy : cost function of classification task (binary cross entropy/ multi cross entropy)
 6. Hinge Loss : https://lsjsj92.tistory.com/391
-7. Faster R-CNN model
-
+7. Faster R-CNN model : https://woosikyang.github.io/Bottom-Up-and-Top-Down-Attention-for-Image-Captioning-and-VQA.html
+8. bottom-up : https://woosikyang.github.io/Bottom-Up-and-Top-Down-Attention-for-Image-Captioning-and-VQA.html
