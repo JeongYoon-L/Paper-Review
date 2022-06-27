@@ -1,0 +1,67 @@
+Dual Attention Networks for Multimodal Reasoning and Matching(2017)
+by Hyeonseob Nam, Jung-Woo Ha, Jeonghee Kim
+--> Second prize in 'CVPR 2016: VQA Challenge'
+
+Link : https://arxiv.org/pdf/1611.00471.pdf
+Keywords : Attention Mechanisms, Visual Question Answering(VQA), Image-Text Matching
+
+Two types of DANs(Dual Attention Networks)
+1. multimodal reasoning(추론) 
+--> Reasoning-DAN(r-DAN)
+Using conjunction memory of previous attention result and next attention result. (Good for multimodal reasoning. e.g.VQA)
+
+2. Matching(매칭)
+--> Matching DAN(m-DAN)
+Divide vision model and language model seperately in each memory, but at the same time, try to find interplay between image and sentence while training.
+This makes easy to do cross-modal matching.
+
+***Let me focus on m-DAN more since I'm interested in ITM***
+
+##Image representation
+Extract from 19-layer VGGNet or 152-layer ResNet.
+Transform to 448*448 and put in CNN
+Add pooling layer at the last layer to get feature vector from other region.
+==> v1, ... vn
+
+##Text representation
+Embedding through one-hot encoding using given T words, w1,...wT
+And then Put iin the bidirectional LSTMs.
+
+## Attention
+1. Visual Attention
+Findng visual context vector v^(k)
+*Using 2-layer FNN and softmax
+
+2. Textual Attention
+Almost same
+
+## r-DAN for visual Question Answering
+Keep same with memory vector m^(k) which keep saving visual, language information in step k.
+And update recursively.
+Output (P_ans) : probability of answer 후보
+
+
+## m-DAN for image-Text Matching
+
+
+Loss function : similar with SCAN
+
+Experiment & Evaluation
+
+*Setup
+K=2, All network's hidden layer's dimension=512 (including LSTM),
+lr=0.1, momentum=0.9, weight decay=0.0005, dropout rate=0.5, gradient clipping=0.1,
+epochs=60, after 30epoch lr=0.01
+minibatch = 128 *128, 4 captions(positive image, positive sentence, negative image, negative sentence)
+
+*Dataset
+VQA Dataset, Training image : 8K, Validation Image : 4K, Test-dev image : 2K, Test-std Image : 2K
+
+*Result
+Much better than other models
+
+
+*** Terminology
+n/a
+
+Reference : https://greeksharifa.github.io/computer%20vision/2019/04/17/Dual-Attention-Networks/
