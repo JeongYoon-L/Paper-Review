@@ -1,0 +1,131 @@
+Stacked Cross Attention for Image-Text Matching(2018)
+by Kuang-Huei Lee, Xi Chen, Gang Hua, Houdong Hu, Xiaodong He
+
+Keywords : Attention, Multi-Modal, Visual-semantic embedding
+
+Link : https://arxiv.org/pdf/1803.08024.pdf
+Code github : https://github.com/kuanghuei/SCAN
+
+1. Introduction
+Inferring the latent correspondence between image regions and words
+--> Stacked Cross Attention Network (SCAN)
+
+2. Prior Study
+Karpathy, A., Fei-Fei, L.: Deep visual-semantic alignments for generating image
+descriptions. In: CVPR (2015)
+--> Fixed step attentional reasoning and only focus on lilmited semantic alignments(one at a time)
+
+
+3. Algorithms
+
+- Stacked Cross Attention
+Two Inputs : V = {v1, ...vl}, E = {e1, ..., en}
+Output : Similarity score
+
+- Two complimentary formulation 
+--> Image-Text & Text-Image
+
+## Image-Text Stacked Cross Attention
+* i-th region, j-th word
+* ai^t : attended sentence vector with respect to the i=th image region
+* vi : ith image region, ej : jth word
+*an^v : represent the attended image vectors
+*Image I, Sentence T
+*They normalize sij
+
+1. It attends to words in the sentence with respect to each image region.
+(Attend to words in the sentence with respect to each image region feature vi to generate an attened sentence vector ai^t for i-th image region)
+
+2. It compares each image region to the corresponding attended sentence vector in order to determine the importance of the image regions with respect to the sentence.
+(Compare ai^t and vi to determine the importance of each image region and then compute the similarity score)
+
+*variable : Lambda1 : the inversed temperatre of the softmax function
+Big L1 : Sharp distribution
+Small L1 : Flat distributon
+
+*variable : Lambda2 : a factor that determines how much to magnify the importance of the most relevant pairs of image regioin feature vi and attended sentence vetor ai^t
+
+
+* Similarity Score R(vi, ai^t) : cosine similarity matrix for all possible pairs
+--> if region i is not mentioned in the sentence, it's feature vi will know the sentence is exist or not through ai^t.
+So, comparing ai^t and vi determines how important region i is with respect to the sentence.
+
+* The similarity between image I and sentence T
+--> S_LSE(I,T)
+--> S_AVG(I,T)
+
+## Text-Image Stacked Cross Attention
+Almost same. change i to j and v to e
+
+1. Attend to image regions with respect to each word feature ei to generate an attended image vector aj^v for j-th word in the sentence
+2. Compare aj^v and ej to determine the importance of each image region, and then compute the similarity score.
+
+
+* While ablation studies, use S_SM(I,T) which is used in [19] --> find image-text similarity by aggregating all possible pairs without attention.
+
+## Alignment Objective
+
+Triplet Loss (common ranking objective for image-text matching)
+Previous Loss : If I and T are closed to one another in the joint embedding space than to any negative pairs,
+by the margin alpha, the hinge loss is zero.
+SO, for computational efficiency, rather than summing over all the negative samples, it usually considers only the hard negatives in a mini-batch of stochastice gradient descent.
+
+--> They focus on the hardest negatives in a mini-batch following [10]
+Change I^ to Ih^ and T^ to Th^ for focusing on the hardest negatives in a mini-batch
+
+
+## Representing images with Bottom-Up Attention
+--> Implement it with a Faster R-CNN model.
+
+1. In the first stage of Region Proposal Network (RPN),a grid of anchors tiled in space, scale and
+aspect ratio are used to generate bounding boxes, or Region Of Interests (ROIs), with high objectness scores.
+2.  In the second stage the representations of the ROIs
+are pooled from the intermediate convolution feature map for region-wise classification and bounding box regression.
+--> Should minimize both the RPN and final stage.
+
+- Adopt Faster R-CNN model in conjunction with ResNet-101 pretrined by [1] on [25]
+
+For rich semantic meaning words, instead of predicting the object classes, the model predicts attribute classes and instance classes.
+(instance classes contain objects and other salient stuff that is difficult to localize)
+
+vi = Wv*fi + bv
+(fi : mean-pooled convoluntional feature from this region)
+
+v = {v1,...,vk}, vi E R^D , a set of embedding vectors.
+
+
+## Representing Sentences
+--> They should map language to the same h-dimensional semantic vetor space as image regions.
+So, they use RNN to embed the words along with their context.
+
+1. Represent it with an one-hot vector showing the index of the word in the vocab.
+2. Embed the word into a 300-dimensional vector through an embedding matrix We . xi = We wi, i E [1,n].
+3. Use bi-directional GRU [3, 37] to map the vector to the final word.
+
+The final word feature ei : by averaging the forward fidden state and backward hidden state, which summarizes information of the sentence centered around wi.
+
+
+
+4. Dataset : Flickr30K, MS-COCO
+5. Result
+
+- Flicker 30K : 
+Improves 22.1% relatively in text retrivel from image query
+Improves 18.2% relatively in image retrieval with text query
+
+- MS-COCO
+Improves sentence retrivel 17.8% relatively
+Improves image retrieval by 16.6% relatively
+
+
+
+
+*** Terminology
+1. fine-grained
+2. end-to-end
+3. attention
+4. Temperature parameter : https://velog.io/@jkl133/temperature-parameter-in-learner-fastai
+5. cross entropy : cost function of classification task (binary cross entropy/ multi cross entropy)
+6. Hinge Loss : https://lsjsj92.tistory.com/391
+7. Faster R-CNN model
+
