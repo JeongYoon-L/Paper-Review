@@ -2,7 +2,7 @@ Dual Attention Networks for Multimodal Reasoning and Matching(2017)
 by Hyeonseob Nam, Jung-Woo Ha, Jeonghee Kim
 --> Second prize in 'CVPR 2016: VQA Challenge'
 
-Link : https://arxiv.org/pdf/1611.00471.pdf
+Paper Link : https://arxiv.org/pdf/1611.00471.pdf
 Keywords : Attention Mechanisms, Visual Question Answering(VQA), Image-Text Matching
 
 Two types of DANs(Dual Attention Networks)
@@ -16,6 +16,12 @@ Divide vision model and language model seperately in each memory, but at the sam
 This makes easy to do cross-modal matching.
 
 ***Let me focus on m-DAN more since I'm interested in ITM***
+
+###Previous Work
+Using CNNs and RNNs, but they are not used to handle both visual and textual data. 
+
+## Subject 
+Propose Dual Attention Networks(DANs) which jointly learn visual and textual attention models to explore the fine-grained interaction between vision and language.
 
 ##Image representation
 Extract from 19-layer VGGNet or 152-layer ResNet.
@@ -33,16 +39,25 @@ Findng visual context vector v^(k)
 *Using 2-layer FNN and softmax
 
 2. Textual Attention
-Almost same
+Almost same, but unlike the visual attention, it does not need an additional layer after the last weighted averaging because the text features u_t are already trained end-to-end.
+
 
 ## r-DAN for visual Question Answering
 Keep same with memory vector m^(k) which keep saving visual, language information in step k.
 And update recursively.
-Output (P_ans) : probability of answer 후보
+Output (P_ans) : probability over the candidate answers.
 
 
 ## m-DAN for image-Text Matching
+Our m-DAN jointly learns visual and textual attention models to capture the shared concepts between the two modalities, 
+but separates them at inference time to provide generally comparable representations in the embedding space. 
 
+Contrary to the r-DAN which uses a joint memory, 
+the m-DAN maintains separate memory vectors for visual and textual attentions.
+
+At each step, compute the similarity s^(k) between visual and textual context vectors by their inner product.
+Output : Similarity
+Trained with bidirectional max-margin ranking loss.
 
 Loss function : similar with SCAN
 
@@ -62,6 +77,10 @@ Much better than other models
 
 
 *** Terminology
-n/a
+1. VQA : https://greeksharifa.github.io/computer%20vision/2019/04/17/Visual-Question-Answering/
+2. FNN (Feed-forward neural network)
+3. element-wise multiplication
+4. tanh function
+
 
 Reference : https://greeksharifa.github.io/computer%20vision/2019/04/17/Dual-Attention-Networks/
