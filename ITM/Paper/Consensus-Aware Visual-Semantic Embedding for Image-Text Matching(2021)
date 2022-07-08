@@ -7,6 +7,8 @@ Code Llink : https://github.com/BruceW91/CVSE
 
 Keywords : Image-Text Matching, Visual-Semantic Embedding, Consensus
 
+"Want to add common sense information!"
+
 - Abstract
 Propose Consensus-aware Visual Semantic Embedding (CVSE) model
 
@@ -16,11 +18,7 @@ So, CVSE : to incorporate the consensus information, namely the commonsense know
 
 1. the consensus information is exploited by computing the statistical co-occurrence correlations between the semantic concepts from the image captioning corpus and deploying the constructed concept correlation graph to yield the consensus-aware concept(CAC) representations.
 2. CVSE learns the associations and alignments between image and text based on the exploited consensus as well as the instance-levvel representations for both modalities.
-
-*Terminology
-1. R-CNN -> Fast R-CNN -> Faster R-CNN
-2. VQA(visual qiestion answering), visual grounding, visual captioning, scene graph generation
-
+3. The consensus-aware representation learning integrates the instance-level and consensus-level representations together, which thereby serves to make the cross-modal alignment.
 
 Introduction
 Figure 1 (a) : Use Deep NN to extract the global representations of both images and texts, based on which their similarities are measured.
@@ -28,3 +26,79 @@ Figure 1 (b) : performs the fragment-level matching and aggregates their similar
 --> yielding satisfactory bidirectional image-text retrieval results ==> can only rely on employing the image-text instance pair to perform cross-modal retrieval, which we name as instance-level alignment in this paper.
 e.g., "A man on a surfboard riding on a ocean wave" with semantically-related image --> "surfboard", "wave" have high probability in both image and text. (co-occurance)
 This paper will consider these factors just like as human being.
+
+Input : the fragment level features of both modalities
+
+<CVSE Model>
+Dual self attention (to generate the instance-level representations v^I & t^I)
++ 
+Leverages the consensus exploitation module to learn the consensus-level representations.
+
+
+*For concept representation learning
+(1) Concept instantiation
+- remove the rarely appeared words from the word vocabulary (select the word with top-q appearing frequencies in the concept vocabulary, three types ; Object, Motion, Property)
+-Restrict the ratio of the concepts with type of Object:Motion:Property = 7:2:1
+- Employ the glove technique to instantialize these selected concepts, which is denoted as Y.
+
+(2) Concept correlation graph building
+- Construct a conditional probability matrix P(to model the correlation between different concepts)
+- P_ij : denoting the appearance proability of concept C_i when concept C_j appears : P_ij= E_ij/N_i
+- E : concept co-occurence matrix, E_ij : the co-occurence times of C_i and C)j, and N_i is the occurence times of C_i in the corpus.
+P's shortage : 1. It is produced by adopting the statistics of co-occurrence relationship of semantic concepts from the image captioning corpus,
+so it may threaten the generalization ability.
+2. the statistical patterns dericed from co-occurrence frequency between concepts can be easily affected by the long-tail distribution, leading to biased correlation graph.
+==> They design a novel scale function, dubbed Confidence Scaling(CS) function, to rescale the matrix P
+B_ij : ~~
+s, u : two pre-defined paramenters to determine the amplifying shrinking rate for rescaling the elements of P.
+And, to not overfitted to the training data and improve its generalization ability, also follow [6] to apply binary operation to the rescaled matrix B : G_ij~~
+G : binarized matrix B, epsilon : threshold parameter filters noisy edges.
+--> These scaling strategy not only assists us to focus on the more reliable co-occurrence relationship among the concepts, but also contributes to depressing the noise contained in the long-tailed data.
+
+
+(3) Consensus-aware concept representation learning
+Graph Convolutional Network (GCN)) : multilayer neural network that operates on a graph and update the embedding representations of the nodes via propagating information based on their neighborhoods.
+--> GCN can learn the mapping function on graph-structured data.
+==> Employ the multiple stacked GCN layers to learn the concept representations (dubbed CGCN module) : introduces higher order neighborhoods information among the concepts to model their inter dependencies.
+
+Given the instantiated concept representations Y, the concept correlation graph G, the embedding feature of the i-th layer is calculated as H~
+H(0): normalized symmetric matrix and W^l represents the learnable weight matrix. p is non-linear activation function.
+Output of the last layer from GCN (to get the final concept representations Z with z_i that is the generated embedding representation of concept C_i, and d indicating the dimensionality of the joint embedding space).
+Z : consensus-aware concept(CAC) representation, which is capable of exploiting the commonsense knowledge to capture underlying interactions among various semantic concepts.
+
+*For Consensus-Aware Representation Learning
+(1) Instance-level Image and Text Representations
+Prior : Only rely on the individual image/text instance to yeld the correponding representations for matching (Figure 2)
+SO, given an input image, utilize a pre-trained Faster-RCNN followed by a fully connected layer to represent it by M region-level visual features O (F-dimensional vector).
+Given a sentence with L words, the word embedding is sequentially fed into a bi-directional GRU, and obtain the word-level textual features by performing mean pooling to aggregate the forward and backward hidden state vectors at each time step.
+And then, self-attention mechanism is used. (to concentrate on the informative portion of the gragment-level features to enhance latend embeddings for both modalities)
+* The region level visual features {o1,...om} is used as the key and value items, while the global visual feature vector Obar is adopted as query item for the attention strategy.
+And then self attention model refines the instance-level visual representation as V^I, and with the same proces,, refine the t^I.
+
+(2) Consensus-level Image and Text Representations
+To incorporate the exploited consensus(Figure 3), take instance-level visual and textual representations (VI, tI) as input to query from the CAC representations.
+Vc : the visual consensus-level representation
+
+For the text, make Tc
+
+(3) Fusing Consensus-level and Instance-level Representations
+
+
+Training and Inference
+==> bidirectional triplet ranking loss
+Impose the Kullback Leibler(KL) divergence on the visual and textual predicted concept scores to further regularize the alignment.
+
+Datasets : Flickr 30K (31783 images, 29783 training, 10000 validation, 1000 test images)
+MSCOCO (123287 images, 113287 training images, 1000 validation images, 5000 test images)
+Results on 1K test set, which is averaging ober 5 folds of 1K set of the full 5K test images
+
+Evaliation Metrics : R@K as evaluation metric
+
+
+
+*Terminology
+1. R-CNN -> Fast R-CNN -> Faster R-CNN
+2. VQA(visual qiestion answering), visual grounding, visual captioning, scene graph generation
+3. self attention
+4. glove technique
+5. R@K
