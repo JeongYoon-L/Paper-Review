@@ -1,0 +1,30 @@
+Consensus-Aware Visual-Semantic Embedding for Image-Text Matching(2021)
+Haoran Wang, Ying Zhang, Zhong Ji, Yanwei Pang, Lin Ma
+Tencent AI Lab, Shenzhen, China
+
+Papaer Link : https://arxiv.org/pdf/2007.08883.pdf
+Code Llink : https://github.com/BruceW91/CVSE
+
+Keywords : Image-Text Matching, Visual-Semantic Embedding, Consensus
+
+- Abstract
+Propose Consensus-aware Visual Semantic Embedding (CVSE) model
+
+Prior work : Tends to rely on only the image-text instance pair to learn their representations
+--> Can exploit their matching relationships and making the corresponding alignments. & No consideration of common sense.
+So, CVSE : to incorporate the consensus information, namely the commonsense knowledge shared between both modalities.
+
+1. the consensus information is exploited by computing the statistical co-occurrence correlations between the semantic concepts from the image captioning corpus and deploying the constructed concept correlation graph to yield the consensus-aware concept(CAC) representations.
+2. CVSE learns the associations and alignments between image and text based on the exploited consensus as well as the instance-levvel representations for both modalities.
+
+*Terminology
+1. R-CNN -> Fast R-CNN -> Faster R-CNN
+2. VQA(visual qiestion answering), visual grounding, visual captioning, scene graph generation
+
+
+Introduction
+Figure 1 (a) : Use Deep NN to extract the global representations of both images and texts, based on which their similarities are measured.
+Figure 1 (b) : performs the fragment-level matching and aggregates their similarities to measure their relevance.
+--> yielding satisfactory bidirectional image-text retrieval results ==> can only rely on employing the image-text instance pair to perform cross-modal retrieval, which we name as instance-level alignment in this paper.
+e.g., "A man on a surfboard riding on a ocean wave" with semantically-related image --> "surfboard", "wave" have high probability in both image and text. (co-occurance)
+This paper will consider these factors just like as human being.
