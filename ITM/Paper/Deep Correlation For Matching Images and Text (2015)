@@ -1,0 +1,17 @@
+Deep Correlation for Matching Images and Text (2015) - Fei Yan
+
+Propose an alternative end-to-end learning sccheme based on the deep canonical correlation analysis (DCCA)
+
+
+
+
+**Terminology
+1. Canonical Correlation -- 정준상관분석
+: Correlation between two canonical or latent types of variables.
+Can find a relationship between many dependent and independent variables.
+(Korean vlog) https://throwexception.tistory.com/1045
+1' : PCA analysis VS Factor analysis
+https://throwexception.tistory.com/996?category=896966
+
+
+
