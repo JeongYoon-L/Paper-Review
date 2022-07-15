@@ -2,7 +2,24 @@ Deep Correlation for Matching Images and Text (2015) - Fei Yan
 
 Propose an alternative end-to-end learning sccheme based on the deep canonical correlation analysis (DCCA)
 
+Extension of [1]
+[1] : Evaluates DCCA on meduim-sized problems with low feature dimensionalities, allowing training in a full batch mode using the L-BFGS method.
+Problem 1. 
+So, this dimensionalities are 2 times higher magnitude of [1], which can better represent the data. But, limits the training to small batches and imposes overfitting problems.
+Problem 2. 
+The hiigher dimensionalities make the singular value decomposition (SVD) required by DCCA much more computationally intensive.
+==> Propose the details of a GPU implementation with CULA libgraries.
+==> 
 
+1.1 Architecture of the network
+1.2 Trace norm objective
+1.3 GPU implementation
+1.4 Addressing overfitting
+
+Dataset
+Flickr8K
+Flickr30K
+IAPR TC-12
 
 
 **Terminology
@@ -12,6 +29,9 @@ Can find a relationship between many dependent and independent variables.
 (Korean vlog) https://throwexception.tistory.com/1045
 1' : PCA analysis VS Factor analysis
 https://throwexception.tistory.com/996?category=896966
+
+2. Matrix trace norm = the sum of sinular values in the matrix
+3. Trace norm objective (TNO) layer
 
 
 
