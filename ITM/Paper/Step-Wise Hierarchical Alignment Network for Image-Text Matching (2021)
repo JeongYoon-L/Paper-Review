@@ -1,4 +1,4 @@
-Step-Wise Hierarchical Alignment Network for Image-Text Matching (2021)
+Step-Wise Hierarchical Alignment Network for Image-Text Matching (2021) - SHAN
 Zhong Ji, Kexin Chen, Haoran Wang
 
 Abstract 
@@ -9,6 +9,21 @@ This work : Propose a ster-wise hierarchical alignment network (SHAN) which deco
 Firstly, Achieve local-to-local alignment at fragment level, following by performing global-to-local and global-to-global alignment at context level sequentially.
 ==> more complementary and sufficient semantic clues to understand the hierarchical correlations between image and text.
 
+Measuring the relevance of an image-text pair by performing three steps of alignments progressively.
+
+1. Employ cross-attention mechanism to align image regions with textual words for fragment-level local-to-local alignment.
+2. Based on the generated context representation, perform global-to-local alignment -> measure the cross-modal similarities at context-level.
+3. Perform a global-to-global cross-modal alignment by leveraging more context-level information.
+
+Method
+1. Feature Representation
+- Image Representation
+
+
+
+
+Dataset
+- Flickr30k & MS-COCO
 
 
 *Terminology
