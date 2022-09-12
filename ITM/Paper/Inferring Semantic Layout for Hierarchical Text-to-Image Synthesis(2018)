@@ -27,5 +27,11 @@ https://arxiv.org/pdf/1801.05091.pdf
 
 **Keywords
 1. GAN
-2. generator
-3. discriminator
+GAN으로 인물사진을 생성해 낼때, 인물사진을 만들어 내는 것이 Generator(생성자), 만들어진 인물사진을 평가하는 것을 Discriminator(구분자)라고 함. 
+Generator 와 Discriminator가 서로 대립(Adversarial)하며 서로의 성능을 점차 개선해 나가는 것이 주요 개념. 
+--> 비지도 학습에 해당 
+https://ebbnflow.tistory.com/167
+
+Generator : 생성된 input을 받아 실제 데이터와 비슷한 데이터를 만들어내도록 학습 (입력 데이터의 distribution을 알아내도록 학습한다, 이 분포를 재현해서 원 데이터의 분포와 차이가 없도록 한다.)
+Discriminator : 실제 데이터와 생성자가 생성한 가짜 데이터를 구별하도록 학습 (실 데이터인지 가짜 데이터인지 구별해서 각각에 대한 확률을 추정)
+
