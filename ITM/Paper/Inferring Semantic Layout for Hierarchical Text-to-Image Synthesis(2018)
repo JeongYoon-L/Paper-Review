@@ -1,0 +1,31 @@
+Inferring Semantic Layout for Hierarchical Text-to-Image Synthesis(2018)
+
+Instead of learning a direct mapping from text to image, they propose an alternative approach that constructs semantic layout as an intermediate representation between text and image.
+Semantic layout : a structure of scene based on object instances and provides fine-grained information of scene, such as the number of objets, object category, location, size, shape, etc. 
+
+1. The layout generator
+constructs a semantic label map from a text description
+
+2. The image generator 
+converts the estimated layout to an image using the text. 
+
+
+- subtasks
+1. Estimate the bounding box layout of an image using the box generator.
+2. Refine the shape of each object inside the box by the shape generator.
+
+Generating semantic layout 장점 
+1. semantic layout provides instance wise annotations on generated images, which can be directly exploited for automated scene parsing and object retrieval.
+2. it offers an interactive interface for controling image generation proess; users can modify the semantic layout to generate a desired image by removing/adding objects, changing size and location of objects, etc.
+
+
+-Dataset
+MS-COCO
+
+
+https://arxiv.org/pdf/1801.05091.pdf
+
+**Keywords
+1. GAN
+2. generator
+3. discriminator
