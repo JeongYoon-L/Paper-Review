@@ -1,4 +1,5 @@
 Inferring Semantic Layout for Hierarchical Text-to-Image Synthesis(2018)
+https://arxiv.org/pdf/1801.05091.pdf
 
 Instead of learning a direct mapping from text to image, they propose an alternative approach that constructs semantic layout as an intermediate representation between text and image.
 Semantic layout : a structure of scene based on object instances and provides fine-grained information of scene, such as the number of objets, object category, location, size, shape, etc. 
@@ -22,8 +23,22 @@ Generating semantic layout 장점
 -Dataset
 MS-COCO
 
+Difference with previous approaches
+1. 
+previous papers: Require ground-truth layouts for generation
+New methods : Infers the semantic layout, and more generally applicable to various generation tasks.
+Can integrate existing segmentation to pixel generation methods to generate an image conditioned on a layout inferred by this.
 
-https://arxiv.org/pdf/1801.05091.pdf
+2. 
+previous papers about inferring scene structure for image generation 
+- predict such specific types of structure for image generation
+This method : Aims to predict semantic label maps, which is a general representation of natural images.
+
+Inferring Semantic Layout from Text
+- Bounding Box Generation
+
+
+
 
 **Keywords
 1. GAN
